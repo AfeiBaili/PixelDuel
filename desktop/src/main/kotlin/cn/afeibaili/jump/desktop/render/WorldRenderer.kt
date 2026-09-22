@@ -77,7 +77,7 @@ class WorldRenderer {
             }
 
             fun computeLayerLight(layerIndex: Int, size: Int): Float {
-                return 1f - layerIndex / size.toFloat() / 1.5f
+                return 1f - layerIndex / size.toFloat() / 1.75f
             }
         }
     }

@@ -19,7 +19,7 @@ class WindowSystem(val window: Window = Application.window) {
 
     fun init() {
 
-        GLFW.glfwSetWindowSizeCallback(window.windowLocation) { _, w, h ->
+        GLFW.glfwSetWindowSizeCallback(window.pointer) { _, w, h ->
             Application.screenWidth = w
             Application.screenHeight = h
             val h = if (h == 0) 1 else h
@@ -44,12 +44,12 @@ class WindowSystem(val window: Window = Application.window) {
             Application.rendererSystem.uiRenderer.update() // ui数据更新
         }
 
-        GLFW.glfwSetCursorPosCallback(window.windowLocation) { _, x, y ->
+        GLFW.glfwSetCursorPosCallback(window.pointer) { _, x, y ->
             cursorX = x.toInt()
             cursorY = y.toInt()
         }
 
-        GLFW.glfwSetWindowCloseCallback(window.windowLocation) {
+        GLFW.glfwSetWindowCloseCallback(window.pointer) {
             Application.stop()
         }
     }
