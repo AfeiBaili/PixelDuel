@@ -38,7 +38,13 @@ class ItemBarLayout {
                 icon(Image("dirt", ImageUtil.loadImage("B:\\Java\\Kotlin\\PixelDuel\\resource\\block\\dirt.png"))) {
                     it.size(50f, 50f)
                 }
-                icon(Image("dirt", ImageUtil.loadImage("B:\\Java\\Kotlin\\PixelDuel\\resource\\block\\stone.png"))) {
+                icon(Image("stone", ImageUtil.loadImage("B:\\Java\\Kotlin\\PixelDuel\\resource\\block\\stone.png"))) {
+                    it.size(50f, 50f)
+                }
+                icon(Image("grass", ImageUtil.loadImage("B:\\Java\\Kotlin\\PixelDuel\\resource\\block\\grass.png"))) {
+                    it.size(50f, 50f)
+                }
+                icon(Image("grass_dirt", ImageUtil.loadImage("B:\\Java\\Kotlin\\PixelDuel\\resource\\block\\grass_dirt.png"))) {
                     it.size(50f, 50f)
                 }
             }
