@@ -32,7 +32,7 @@ class F3Layout {
     val windowSystem get() = Application.windowSystem
     val worldEditor get() = Application.worldEditor
     val textBackgroundColor = Color.parse("#2B2D3080")
-    val keySet = KeySet("key" identifier "f3")
+    val keySet = KeySet("f3")
     val scale = 0.4f
     lateinit var f3: Layout
 

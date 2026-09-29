@@ -2,6 +2,7 @@ package cn.afeibaili.jump.common.world
 
 import cn.afeibaili.jump.common.block.Block
 import cn.afeibaili.jump.common.block.BlockType
+import cn.afeibaili.jump.common.block.Blocks
 import java.util.*
 
 
@@ -57,7 +58,7 @@ class Chunk(
 
     companion object {
         fun createEmpty(chunkX: Int, chunkY: Int): Chunk {
-            return createByBlock(chunkX, chunkY, BlockType.AIR)
+            return createByBlock(chunkX, chunkY, Blocks.AIR.blockType)
         }
 
         fun createByBlock(chunkX: Int, chunkY: Int, blockType: BlockType): Chunk {

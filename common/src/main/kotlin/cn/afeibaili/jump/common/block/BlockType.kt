@@ -24,14 +24,6 @@ data class BlockType(val identifier: Identifier) {
         val all = HashMap<Identifier, BlockType>()
         private val logger = logger { "Blocks" }
 
-        val ERROR = register("error")
-        val AIR = register("air")
-        val DIRT = register("dirt")
-        val GRASS_DIRT = register("grass_dirt")
-        val GRASS = register("grass")
-        val GRASS_TALL = register("grass_tall")
-        val STONE = register("stone")
-
         fun register(id: String): BlockType {
             val identifier = Identifier("block", id)
             logger.info("registering $identifier")
@@ -42,7 +34,7 @@ data class BlockType(val identifier: Identifier) {
             val blockType: BlockType? = all[identifier]
             if (blockType == null) {
                 logger.warn("not found $identifier")
-                return ERROR
+                return Blocks.ERROR.blockType
             }
             return blockType
         }

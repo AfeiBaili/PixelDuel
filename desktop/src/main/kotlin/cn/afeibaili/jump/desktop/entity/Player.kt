@@ -1,7 +1,6 @@
 package cn.afeibaili.jump.desktop.entity
 
 import cn.afeibaili.gl.input.Key
-import cn.afeibaili.jump.common.identifier
 import cn.afeibaili.jump.desktop.input.KeySet
 import cn.afeibaili.jump.desktop.logic.LogicThread
 import cn.afeibaili.jump.desktop.logic.TickHandler
@@ -31,7 +30,7 @@ class Player(
     override val smooth: Float = 0.85f
     override var pvx: Float = 0f
     override var pvy: Float = 0f
-    val keySet = KeySet("key" identifier "player")
+    val keySet = KeySet("player")
 
     init {
         TickHandler.addHandler(this)

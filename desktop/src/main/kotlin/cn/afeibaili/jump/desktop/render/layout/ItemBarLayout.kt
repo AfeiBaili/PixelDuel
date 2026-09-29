@@ -9,6 +9,7 @@ import cn.afeibaili.gl.render.layout.align.AlignmentType
 import cn.afeibaili.gl.render.layout.align.block
 import cn.afeibaili.gl.render.layout.image.icon
 import cn.afeibaili.jump.desktop.Application
+import cn.afeibaili.jump.desktop.item.ItemBar
 
 
 /**
@@ -17,9 +18,9 @@ import cn.afeibaili.jump.desktop.Application
  * @author AfeiBaili
  * @version 2026/9/27 00:36
  */
-
 class ItemBarLayout {
     lateinit var itemBarLayout: AlignmentLayout
+    val itemBar: ItemBar get() = Application.worldEditor.itemBar
 
     fun load() {
         layout()

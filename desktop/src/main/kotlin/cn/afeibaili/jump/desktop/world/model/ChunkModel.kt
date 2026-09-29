@@ -4,7 +4,7 @@ import cn.afeibaili.gl.exception.ImageException
 import cn.afeibaili.gl.image.Atlas
 import cn.afeibaili.gl.image.Texture
 import cn.afeibaili.gl.util.Index
-import cn.afeibaili.jump.common.block.BlockType
+import cn.afeibaili.jump.common.block.Blocks
 import cn.afeibaili.jump.common.json.BlockInfo
 import cn.afeibaili.jump.common.resource.BlockInfoLoader
 import cn.afeibaili.jump.common.world.Chunk
@@ -54,7 +54,7 @@ class ChunkModel(val chunk: Chunk, var blockAtlas: MutableList<BlockAtlas>) {
             chunk.blocks.forEach { block ->
                 var atlas: Atlas? = blockTextureAtlas.getAtlas(block.id)
                 if (atlas == null) {
-                    atlas = blockTextureAtlas.getAtlas(BlockType.ERROR.id)
+                    atlas = blockTextureAtlas.getAtlas(Blocks.ERROR.blockType.id)
                 }
                 atlas ?: throw ImageException("找不到错误纹理，其中纹理缺失: ${block.type.id}")
 
@@ -62,7 +62,7 @@ class ChunkModel(val chunk: Chunk, var blockAtlas: MutableList<BlockAtlas>) {
                     blockTextureAtlas.getUvs(block.id)
                 }.getOrElse {
                     runCatching {
-                        blockTextureAtlas.getUvs(BlockType.ERROR.id)
+                        blockTextureAtlas.getUvs(Blocks.ERROR.blockType.id)
                     }.getOrElse { throw ImageException("找不到错误纹理uv") }
                 }
 

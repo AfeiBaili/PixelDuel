@@ -2,7 +2,7 @@ package cn.afeibaili.jump.desktop.input
 
 import cn.afeibaili.gl.input.Key
 import cn.afeibaili.gl.input.KeyBind
-import cn.afeibaili.jump.common.Identifier
+import cn.afeibaili.jump.common.identifier
 import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
 import cn.afeibaili.jump.desktop.logic.TickHandler
@@ -41,7 +41,9 @@ import cn.afeibaili.jump.desktop.logic.TickHandler
  * @version 2026/6/27 19:53
  */
 
-data class KeySet(val identifier: Identifier) : TickHandler {
+data class KeySet(val id: String) : TickHandler {
+    val identifier = "key" identifier id
+
     companion object {
         @JvmStatic
         private val logger = logger { "KeySet" }

@@ -4,7 +4,7 @@ import cn.afeibaili.gl.image.Texture
 import cn.afeibaili.gl.image.TextureAtlas
 import cn.afeibaili.gl.image.TextureModel
 import cn.afeibaili.gl.util.Index
-import cn.afeibaili.jump.common.block.BlockType
+import cn.afeibaili.jump.common.block.Blocks
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.logger
 import java.awt.image.BufferedImage
@@ -22,12 +22,12 @@ object TextureManager {
 
     private val logger = logger { "TextureManager" }
 
-    val air = TextureModel.create(BlockType.AIR.id) {
+    val air = TextureModel.create(Blocks.AIR.blockType.id) {
         val image = getDefaultImage()
         image
     }
 
-    val error = TextureModel.createDynamic(BlockType.ERROR.id) {
+    val error = TextureModel.createDynamic(Blocks.ERROR.blockType.id) {
         val seed: Long = System.currentTimeMillis()
         val random = Random(seed)
         logger.info("error random seed: $seed")
