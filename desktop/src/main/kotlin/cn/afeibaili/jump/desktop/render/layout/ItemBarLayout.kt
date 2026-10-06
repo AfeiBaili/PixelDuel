@@ -36,7 +36,7 @@ class ItemBarLayout {
                     val grid = itemBar.bar[index]
                     val image: Image = if (grid.item?.id == null) blockImages.getImage("air")
                     else blockImages.getImage(grid.item!!.id)
-                    icon(index.toString(), image, iconUpdater)
+                    icon(index.toString(), image, iconUpdater) { it.size(50f, 50f) }
                 }
             }
         }
