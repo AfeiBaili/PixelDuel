@@ -1,6 +1,7 @@
 package cn.afeibaili.jump.desktop.render
 
-import cn.afeibaili.gl.render.ImageRenderer
+import cn.afeibaili.gl.image.atlas.Skyline
+import cn.afeibaili.gl.render.ImageCollectionRenderer
 import cn.afeibaili.gl.render.LayoutRenderer
 import cn.afeibaili.gl.render.RectangleRenderer
 import cn.afeibaili.gl.render.TextLayoutRenderer
@@ -12,6 +13,7 @@ import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
 import cn.afeibaili.jump.desktop.render.layout.F3Layout
 import cn.afeibaili.jump.desktop.render.layout.ItemBarLayout
+import cn.afeibaili.jump.desktop.render.texture.TextureManager
 
 /**
  * # 界面渲染器
@@ -29,8 +31,10 @@ class UIRenderer {
     lateinit var imageCamera: Camera
     var f3Layout: F3Layout = F3Layout()
     var itemBarLayout: ItemBarLayout = ItemBarLayout()
+    val skyline = Skyline()
 
     fun init() {
+        initSkyline()
         f3Layout.load()
         itemBarLayout.load()
         logger.info("loaded layout")
@@ -69,10 +73,14 @@ class UIRenderer {
         val imageProgram: Program = Program.create(imageVertexShader, imageFragmentShader).apply { link() }
         imageCamera =
             Camera(imageProgram).apply { ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f) }
-        val imageRenderer = ImageRenderer(imageProgram, imageCamera)
+        val imageRenderer = ImageCollectionRenderer(imageProgram, imageCamera, skyline)
 
         layoutRenderer = LayoutRenderer(textRenderer, rectangleRenderer, imageRenderer, Application.screen)
         layoutRenderer.init()
+    }
+
+    fun initSkyline() {
+        TextureManager.blockImageList.getAllImage().forEach { skyline.add(it) }
     }
 
     fun update() {
@@ -81,6 +89,7 @@ class UIRenderer {
 
     fun render() {
         f3Layout.updateText()
+        itemBarLayout.update()
         layoutRenderer.render()
     }
 }

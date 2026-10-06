@@ -48,14 +48,14 @@ class Application {
         lateinit var world: WorldModel
 
         fun setup() {
+            logger.info("initialize world editor")
+            worldEditor = WorldEditor(world.world)
             logger.info("initialize window system")
             windowSystem.init()
             logger.info("initialize renderer system")
             rendererSystem.init()
             logger.info("initialize player")
             player.init()
-            logger.info("initialize world editor")
-            worldEditor = WorldEditor(world.world)
             logger.info("application is initialized")
         }
 

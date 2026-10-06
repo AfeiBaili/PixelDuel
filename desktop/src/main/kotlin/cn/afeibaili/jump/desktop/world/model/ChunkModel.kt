@@ -6,7 +6,6 @@ import cn.afeibaili.gl.image.Texture
 import cn.afeibaili.gl.util.Index
 import cn.afeibaili.jump.common.block.Blocks
 import cn.afeibaili.jump.common.json.BlockInfo
-import cn.afeibaili.jump.common.resource.BlockInfoLoader
 import cn.afeibaili.jump.common.world.Chunk
 import cn.afeibaili.jump.desktop.render.texture.TextureManager
 import cn.afeibaili.jump.desktop.world.block.BlockModel
@@ -41,7 +40,7 @@ class ChunkModel(val chunk: Chunk, var blockAtlas: MutableList<BlockAtlas>) {
     companion object {
         val blockTextureAtlas get() = TextureManager.blockTextureAtlas
         val textureSide get() = TextureManager.textureSizeMap
-        val blockInfo get() = BlockInfoLoader.load()
+        val blockInfo get() = TextureManager.blockInfoMap
 
         fun of(chunk: Chunk): ChunkModel {
             return ChunkModel(chunk, buildAtlases(chunk))
@@ -69,7 +68,7 @@ class ChunkModel(val chunk: Chunk, var blockAtlas: MutableList<BlockAtlas>) {
                 var blockModelType: BlockModelType? = blockTypeModelMap[block.id]
                 if (blockModelType == null) {
                     val info: BlockInfo? = blockInfo[block.id]
-                    val switchIntervalMilli: Int = info?.switchIntervalMilli ?: 500
+                    val switchIntervalMilli: Int = info?.switchIntervalMillis ?: 500
                     blockTypeModelMap[block.id] = BlockModelType.register(
                         block.type.identifier, BlockUv(uvs, switchIntervalMilli)
                     )

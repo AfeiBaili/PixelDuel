@@ -5,9 +5,12 @@ import cn.afeibaili.gl.image.TextureAtlas
 import cn.afeibaili.gl.image.TextureModel
 import cn.afeibaili.gl.util.Index
 import cn.afeibaili.jump.common.block.Blocks
+import cn.afeibaili.jump.common.resource.BlockInfoLoader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.logger
 import java.awt.image.BufferedImage
+import java.io.File
+import javax.imageio.ImageIO
 import kotlin.random.Random
 
 /**
@@ -21,7 +24,7 @@ object TextureManager {
     const val DEFAULT_MODEL_SIZE = 16
 
     private val logger = logger { "TextureManager" }
-
+    val blockInfoMap = BlockInfoLoader.load()
     val air = TextureModel.create(Blocks.AIR.blockType.id) {
         val image = getDefaultImage()
         image
@@ -49,6 +52,21 @@ object TextureManager {
             getErrorImage(),
         )
     }
+
+    val blockImageMap = HashMap<String, TextureModel>().apply {
+        val list: List<File> = ResourceFileGetter.getResourceFileList("block")
+        list.forEach { file ->
+            if (file.isDirectory) return@forEach
+            val split: List<String> = file.name.split(".")
+            if (split.last() != "png") return@forEach
+            val id: String = split.first()
+            this[id] = TextureModel(id, ImageIO.read(file))
+        }
+        this[air.id] = air
+        error.forEach { this[it.id] = it }
+    }
+
+    val blockImageList = BlockImageList(blockImageMap)
 
     /** 方块所有图集 */
     val blockTextureAtlas = TextureAtlas.create(

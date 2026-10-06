@@ -7,4 +7,4 @@ package cn.afeibaili.jump.common.json
  * @version 2026/7/3 00:59
  */
 
-data class BlockInfo(val switchIntervalMilli: Int)
+data class BlockInfo(val switchIntervalMillis: Int)
