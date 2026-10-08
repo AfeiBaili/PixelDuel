@@ -45,7 +45,7 @@ class ItemBarLayout {
                     else blockImages.getImage(grid.item!!.id)
                     icon(index.toString(), image, iconUpdater) { it.size(iconSize) }
                 }
-                selectedItem = border(5f, Color.WHITE) { it.size(iconSize) }
+                selectedItem = border(5f, Color.WHITE.setAlpha(0.9f)) { it.size(iconSize) }
             }
         }
     }

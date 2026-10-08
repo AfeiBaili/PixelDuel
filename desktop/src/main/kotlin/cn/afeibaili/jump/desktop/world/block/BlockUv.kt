@@ -33,7 +33,7 @@ class BlockUv(val uv: List<FloatArray>, var switchIntervalMilli: Int = 500) {
         val delta = currentMillis - lastMillis
         lastMillis = currentMillis
         accumulator += delta
-        if (accumulator > switchIntervalMilli) {
+        while (accumulator > switchIntervalMilli) {
             accumulator -= switchIntervalMilli
             getNext()
             changed = true
