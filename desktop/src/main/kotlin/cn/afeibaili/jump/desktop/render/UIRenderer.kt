@@ -1,10 +1,7 @@
 package cn.afeibaili.jump.desktop.render
 
 import cn.afeibaili.gl.image.atlas.Skyline
-import cn.afeibaili.gl.render.ImageCollectionRenderer
-import cn.afeibaili.gl.render.LayoutRenderer
-import cn.afeibaili.gl.render.RectangleRenderer
-import cn.afeibaili.gl.render.TextLayoutRenderer
+import cn.afeibaili.gl.render.*
 import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
@@ -29,6 +26,7 @@ class UIRenderer {
     lateinit var rectCamera: Camera
     lateinit var textCamera: Camera
     lateinit var imageCamera: Camera
+    lateinit var borderCamera: Camera
     var f3Layout: F3Layout = F3Layout()
     var itemBarLayout: ItemBarLayout = ItemBarLayout()
     val skyline = Skyline()
@@ -48,7 +46,7 @@ class UIRenderer {
         val rectProgram: Program = Program.create(rectVertexShader, rectFragmentShader).apply { link() }
         rectCamera =
             Camera(rectProgram).apply { ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f) }
-        val rectangleRenderer = RectangleRenderer(rectProgram, rectCamera)
+        val rectRenderer = RectangleRenderer(rectProgram, rectCamera)
 
         // TEXT ////
         val textVertexShader = Shader.create(
@@ -75,7 +73,21 @@ class UIRenderer {
             Camera(imageProgram).apply { ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f) }
         val imageRenderer = ImageCollectionRenderer(imageProgram, imageCamera, skyline)
 
-        layoutRenderer = LayoutRenderer(textRenderer, rectangleRenderer, imageRenderer, Application.screen)
+        // BORDER ////
+        val borderVertexShader: Shader = Shader.create(
+            Shader.ShaderType.VERTEX,
+            ResourceFileGetter.getResourceFile("shader/layout/border.vert").readText()
+        )
+        val borderFragmentShader = Shader.create(
+            Shader.ShaderType.FRAGMENT,
+            ResourceFileGetter.getResourceFile("shader/layout/border.frag").readText()
+        )
+        val borderProgram: Program = Program.create(borderVertexShader, borderFragmentShader).apply { link() }
+        borderCamera =
+            Camera(borderProgram).apply { ortho(0f, window.width.toFloat(), window.height.toFloat(), 0f, -1f, 1f) }
+        val borderRenderer = BorderRenderer(borderProgram, borderCamera)
+        layoutRenderer =
+            LayoutRenderer(textRenderer, rectRenderer, imageRenderer, borderRenderer, Application.screen)
         layoutRenderer.init()
     }
 

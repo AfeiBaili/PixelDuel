@@ -40,6 +40,7 @@ class WindowSystem(val window: Window = Application.window) {
             setWidthHeightOrtho(Application.rendererSystem.uiRenderer.rectCamera, 0f, w.toFloat(), h.toFloat(), 0f)
             setWidthHeightOrtho(Application.rendererSystem.uiRenderer.textCamera, 0f, w.toFloat(), h.toFloat(), 0f)
             setWidthHeightOrtho(Application.rendererSystem.uiRenderer.imageCamera, 0f, w.toFloat(), h.toFloat(), 0f)
+            setWidthHeightOrtho(Application.rendererSystem.uiRenderer.borderCamera, 0f, w.toFloat(), h.toFloat(), 0f)
 
 
             Application.screen.update(w.toFloat(), h.toFloat()) //屏幕大小更新

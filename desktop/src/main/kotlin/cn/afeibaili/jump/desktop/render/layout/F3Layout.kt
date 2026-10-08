@@ -1,6 +1,5 @@
 package cn.afeibaili.jump.desktop.render.layout
 
-import cn.afeibaili.gl.font.FontFactory
 import cn.afeibaili.gl.input.Key
 import cn.afeibaili.gl.render.Color
 import cn.afeibaili.gl.render.layout.Layout
@@ -10,11 +9,10 @@ import cn.afeibaili.gl.render.layout.align.AlignmentType
 import cn.afeibaili.gl.render.layout.align.block
 import cn.afeibaili.gl.render.layout.text.TextUpdater
 import cn.afeibaili.gl.render.layout.text.text
-import cn.afeibaili.jump.common.identifier
-import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.desktop.Application
 import cn.afeibaili.jump.desktop.entity.Player
 import cn.afeibaili.jump.desktop.input.KeySet
+import cn.afeibaili.jump.desktop.render.font.Fonts.font
 import org.lwjgl.glfw.GLFW
 
 /**
@@ -24,9 +22,6 @@ import org.lwjgl.glfw.GLFW
  * @version 2026/8/26 14:04
  */
 class F3Layout {
-    val font = FontFactory.create(
-        "source", ResourceFileGetter.getResourceFile("font/SourceHanSansHWSC-Regular.otf").canonicalPath, 64
-    ).apply { texture.upload() }
     val textUpdater = TextUpdater()
     val window get() = Application.window
     val windowSystem get() = Application.windowSystem
