@@ -2,6 +2,7 @@ package cn.afeibaili.jump.desktop.world
 
 import cn.afeibaili.gl.input.Key
 import cn.afeibaili.gl.input.MouseButton
+import cn.afeibaili.gl.util.Time
 import cn.afeibaili.jump.common.block.Block
 import cn.afeibaili.jump.common.block.Blocks
 import cn.afeibaili.jump.common.identifier
@@ -40,6 +41,9 @@ class WorldEditor(val world: World) : TickHandler {
     var maxLayerIndex = world.layers.size
     var currentLayerIndex = 0
     var itemBar: ItemBar = ItemBar()
+    var placeInterval = 50
+    var accumulator = 0L
+    var lastPlaceMillis = Time.millis()
 
     // input /////
     val mouseButtonSet = MouseButtonSet("mouse" identifier "world.editor")
@@ -86,8 +90,16 @@ class WorldEditor(val world: World) : TickHandler {
 
     fun loadInput() {
         mouseButtonSet.bind(MouseButton("place.block", GLFW.GLFW_MOUSE_BUTTON_2)) {
-            if (buttonPressed()) placeBlockByButton()
-
+            if (buttonPressed()) {
+                val currentMillis = Time.millis()
+                val delta = currentMillis - lastPlaceMillis
+                lastPlaceMillis = currentMillis
+                accumulator += delta
+                while (accumulator > placeInterval) {
+                    accumulator -= placeInterval
+                    placeBlockByButton()
+                }
+            }
         }
         mouseButtonSet.bind(MouseButton("break.block", GLFW.GLFW_MOUSE_BUTTON_1)) {
             if (buttonPressed()) breakBlockByButton()
