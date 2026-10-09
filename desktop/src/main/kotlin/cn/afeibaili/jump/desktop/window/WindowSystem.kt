@@ -1,8 +1,10 @@
 package cn.afeibaili.jump.desktop.window
 
 import cn.afeibaili.gl.Window
+import cn.afeibaili.gl.input.ScrollBind
 import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.jump.desktop.Application
+import cn.afeibaili.jump.desktop.input.ScrollSet
 import org.lwjgl.glfw.GLFW
 
 /**
@@ -18,7 +20,6 @@ class WindowSystem(val window: Window = Application.window) {
     var aspect = Application.screenWidth.toFloat() / Application.screenHeight.toFloat()
 
     fun init() {
-
         GLFW.glfwSetWindowSizeCallback(window.pointer) { _, w, h ->
             Application.screenWidth = w
             Application.screenHeight = h
@@ -54,6 +55,18 @@ class WindowSystem(val window: Window = Application.window) {
 
         GLFW.glfwSetWindowCloseCallback(window.pointer) {
             Application.stop()
+        }
+
+        GLFW.glfwSetScrollCallback(window.pointer) { _, x, y ->
+            for (set in ScrollSet.all) {
+                if (!set.enabled) continue
+                for ((bind, action) in set.set) {
+                    val scrollBind: ScrollBind = bind
+                    scrollBind.xv += x
+                    scrollBind.yv += y
+                    action(bind)
+                }
+            }
         }
     }
 

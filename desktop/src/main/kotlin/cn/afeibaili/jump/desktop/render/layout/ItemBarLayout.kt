@@ -1,6 +1,7 @@
 package cn.afeibaili.jump.desktop.render.layout
 
 import cn.afeibaili.gl.image.atlas.Image
+import cn.afeibaili.gl.input.Scroll
 import cn.afeibaili.gl.render.Color
 import cn.afeibaili.gl.render.layout.adapt.columnAdapt
 import cn.afeibaili.gl.render.layout.align.AlignmentLayout
@@ -13,6 +14,7 @@ import cn.afeibaili.gl.render.layout.image.icon
 import cn.afeibaili.gl.render.layout.shape.border.BorderComponent
 import cn.afeibaili.gl.render.layout.shape.border.border
 import cn.afeibaili.jump.desktop.Application
+import cn.afeibaili.jump.desktop.input.ScrollSet
 import cn.afeibaili.jump.desktop.item.ItemBar
 import cn.afeibaili.jump.desktop.render.texture.TextureManager
 
@@ -30,9 +32,19 @@ class ItemBarLayout {
     val iconUpdater = IconUpdater()
     val iconSize = 50f
     lateinit var selectedItem: BorderComponent
+    val scrollSet = ScrollSet("item.bar")
 
     fun load() {
         layout()
+        initInput()
+    }
+
+    fun initInput() {
+        scrollSet.bind(Scroll("switch.item", 2.0)) {
+            down { itemBar.switchNext() }
+            up { itemBar.switchPrevious() }
+        }
+        scrollSet.on()
     }
 
     private fun layout() = Application.screen.layout {
