@@ -40,8 +40,10 @@ class ItemBarLayout {
     }
 
     fun initInput() {
-        scrollSet.bind(Scroll("switch.item", 2.0)) {
+        scrollSet.bind(Scroll("next.item", 1.0)) {
             down { itemBar.switchNext() }
+        }
+        scrollSet.bind(Scroll("previous.item", 1.0)) {
             up { itemBar.switchPrevious() }
         }
         scrollSet.on()

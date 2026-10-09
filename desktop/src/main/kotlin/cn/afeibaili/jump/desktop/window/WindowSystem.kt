@@ -6,6 +6,7 @@ import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.jump.desktop.Application
 import cn.afeibaili.jump.desktop.input.ScrollSet
 import org.lwjgl.glfw.GLFW
+import kotlin.math.abs
 
 /**
  * # 窗口系统管理
@@ -62,8 +63,10 @@ class WindowSystem(val window: Window = Application.window) {
                 if (!set.enabled) continue
                 for ((bind, action) in set.set) {
                     val scrollBind: ScrollBind = bind
-                    scrollBind.xv += x
-                    scrollBind.yv += y
+                    if (y >= 0) scrollBind.uv += abs(y)
+                    else scrollBind.dv += abs(y)
+                    if (x >= 0) scrollBind.lv += abs(x)
+                    else scrollBind.rv += abs(x)
                     action(bind)
                 }
             }
