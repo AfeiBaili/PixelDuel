@@ -32,7 +32,7 @@ class Application {
         private val logger = logger { "Application" } //日志器
         var running = true
         val window: Window = Window.builder() //窗口构建器
-            .buildTitle("像素决斗")
+            .buildTitle("Anying: Fight")
             .buildWidth(screenWidth)
             .buildHeight(screenHeight)
             .withVerticalSync(false)
