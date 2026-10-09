@@ -2,6 +2,7 @@ package cn.afeibaili.jump.desktop.world
 
 import cn.afeibaili.gl.input.Key
 import cn.afeibaili.gl.input.MouseButton
+import cn.afeibaili.gl.input.Scroll
 import cn.afeibaili.gl.util.Time
 import cn.afeibaili.jump.common.block.Block
 import cn.afeibaili.jump.common.block.Blocks
@@ -12,6 +13,7 @@ import cn.afeibaili.jump.desktop.Application
 import cn.afeibaili.jump.desktop.entity.Player
 import cn.afeibaili.jump.desktop.input.KeySet
 import cn.afeibaili.jump.desktop.input.MouseButtonSet
+import cn.afeibaili.jump.desktop.input.ScrollSet
 import cn.afeibaili.jump.desktop.item.ItemBar
 import cn.afeibaili.jump.desktop.item.ItemGrid
 import cn.afeibaili.jump.desktop.logic.TickHandler
@@ -49,6 +51,7 @@ class WorldEditor(val world: World) : TickHandler {
     val mouseButtonSet = MouseButtonSet("mouse" identifier "world.editor")
     val layerKeySet = KeySet("world.editor.layer")
     val itemBarKeySet = KeySet("world.editor.item.bar")
+    val scrollSet = ScrollSet("world.editor.switch.layer")
 
     init {
         TickHandler.addHandler(this)
@@ -56,6 +59,7 @@ class WorldEditor(val world: World) : TickHandler {
         mouseButtonSet.on()
         layerKeySet.on()
         itemBarKeySet.on()
+        scrollSet.on()
     }
 
     override fun tick() {
@@ -139,6 +143,12 @@ class WorldEditor(val world: World) : TickHandler {
         }
         itemBarKeySet.bind(Key("item.bar.10", GLFW.GLFW_KEY_0)) {
             pressed { itemBar.switchGird(9) }
+        }
+        scrollSet.bind(Scroll("next.layer", 2.0, shift = true)) {
+            down { switchNextLayer() }
+        }
+        scrollSet.bind(Scroll("previous.layer", 2.0, shift = true)) {
+            up { switchPreviousLayer() }
         }
     }
 }
