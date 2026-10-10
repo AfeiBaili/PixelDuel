@@ -2,6 +2,7 @@ package cn.afeibaili.jump.desktop.render
 
 import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.render.text.FpsTimer
+import cn.afeibaili.jump.desktop.render.texture.TextureManager
 
 
 /**
@@ -32,6 +33,7 @@ class RendererSystem {
     fun frame() {
         fps.update()
         blockModelUpdater.update()
+        TextureManager.blockImageList.updateDynamicImage()
         worldRenderer.render()
         playerRenderer.render()
         uiRenderer.render()

@@ -1,5 +1,6 @@
 package cn.afeibaili.jump.desktop.render
 
+import cn.afeibaili.gl.image.atlas.BigImageAtlas
 import cn.afeibaili.gl.render.WorldRenderer
 import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.gl.render.shader.Program
@@ -30,8 +31,6 @@ class WorldRenderer {
     private lateinit var renderer: WorldRender
 
     fun init() {
-        logger.info("upload texture to gpu")
-        TextureManager.blockTextureAtlas.atlas.forEach { (_, atlas) -> atlas.texture.upload() }
         logger.info("transform to world model")
         logger.info("create program")
         _program = Program.create(
@@ -46,7 +45,7 @@ class WorldRenderer {
         )
         _camera = Camera(_program, "projection", "view")
         _program.link()
-        renderer = WorldRender(_program, _camera, world)
+        renderer = WorldRender(_program, _camera, TextureManager.blockBigImageAtlas, world)
     }
 
     fun render() {
@@ -57,21 +56,23 @@ class WorldRenderer {
         class WorldRender(
             override val program: Program,
             override val camera: Camera,
+            bigImageAtlas: BigImageAtlas,
             val world: WorldModel,
         ) : WorldRenderer(program, camera) {
+            val texture = bigImageAtlas.toTexture().apply { this.upload() }
+
             fun render() {
+                texture.bind()
+
                 val layerSize = world.layers.size
                 for (index in layerSize - 1 downTo 0) {
                     val layer: LayerModel = world.layers[index]
                     layer.chunks.forEach { chunkModel ->
                         chunkModel.update()
-                        for (atlas in chunkModel.blockAtlas) {
-                            atlas.texture.bind()
-                            uploadInstanceBuffer(atlas.instanceBuffer)
-                            uploadUvBuffer(atlas.uvBuffer)
-                            program.setUniform("light", f1 = computeLayerLight(index, layerSize))
-                            renderInstance(atlas.size)
-                        }
+                        uploadInstanceBuffer(chunkModel.positionBuffer)
+                        uploadUvBuffer(atlas.uvBuffer)
+                        program.setUniform("light", f1 = computeLayerLight(index, layerSize))
+                        renderInstance(chunkModel.blocks.size)
                     }
                 }
             }

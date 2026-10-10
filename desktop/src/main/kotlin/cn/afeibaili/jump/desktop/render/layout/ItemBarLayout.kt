@@ -65,7 +65,6 @@ class ItemBarLayout {
     }
 
     fun update() {
-        blockImages.updateDynamicImage()
         itemBar.bar.forEachIndexed { index, grid ->
             grid.item?.id?.let { iconUpdater.update(index.toString(), blockImages.getImage(it)) }
         }

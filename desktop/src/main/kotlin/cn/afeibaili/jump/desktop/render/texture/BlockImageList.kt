@@ -1,9 +1,11 @@
 package cn.afeibaili.jump.desktop.render.texture
 
 import cn.afeibaili.gl.image.TextureModel
+import cn.afeibaili.gl.image.atlas.BigImageAtlas
 import cn.afeibaili.gl.image.atlas.DynamicImage
 import cn.afeibaili.gl.image.atlas.Image
 import cn.afeibaili.gl.util.putElementOrCreateList
+import cn.afeibaili.jump.desktop.world.block.BlockUv
 import java.awt.image.BufferedImage
 
 /**
@@ -46,6 +48,22 @@ class BlockImageList {
         allImages.putAll(images)
     }
 
+    /**
+     * ## 使用 BigImageAtlas 接口需要事先填入元素
+     */
+    fun toBlockUvMap(bigImageAtlas: BigImageAtlas): Map<String, BlockUv> {
+        bigImageAtlas.apply()
+        bigImageAtlas.generateUv()
+        val map = mutableMapOf<String, BlockUv>()
+        allDynamicImages.forEach { (_, image) ->
+            map[image.key] = BlockUv(image.getUvs(), image.switchMillisInternal)
+        }
+        allImages.forEach { (_, image) ->
+            map[image.key] = BlockUv(listOf(image.uv))
+        }
+        return map
+    }
+
     fun getImage(key: String): Image {
         allDynamicImages[key]?.let { return it.getImage() }
         allImages[key]?.let { return it }
@@ -61,8 +79,6 @@ class BlockImageList {
     }
 
     fun updateDynamicImage() {
-        allDynamicImages.values.forEach { image ->
-            image.update()
-        }
+        allDynamicImages.values.forEach { image -> image.update() }
     }
 }

@@ -29,7 +29,7 @@ class UIRenderer {
     lateinit var borderCamera: Camera
     var f3Layout: F3Layout = F3Layout()
     var itemBarLayout: ItemBarLayout = ItemBarLayout()
-    val skyline = Skyline()
+    val skyline = Skyline("ui")
 
     fun init() {
         initSkyline()

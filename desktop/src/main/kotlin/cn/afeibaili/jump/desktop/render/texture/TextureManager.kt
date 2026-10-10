@@ -1,9 +1,7 @@
 package cn.afeibaili.jump.desktop.render.texture
 
-import cn.afeibaili.gl.image.Texture
-import cn.afeibaili.gl.image.TextureAtlas
 import cn.afeibaili.gl.image.TextureModel
-import cn.afeibaili.gl.util.Index
+import cn.afeibaili.gl.image.atlas.Skyline
 import cn.afeibaili.jump.common.block.Blocks
 import cn.afeibaili.jump.common.resource.BlockInfoLoader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
@@ -66,19 +64,12 @@ object TextureManager {
         error.forEach { this[it.id] = it }
     }
 
+    /** 方块纹理集合 */
     val blockImageList = BlockImageList(blockImageMap)
 
-    /** 方块所有图集 */
-    val blockTextureAtlas = TextureAtlas.create(
-        "block",
-        ResourceFileGetter.getResourceFileList("block"),
-        1,
-        air, *error.toTypedArray(),
-    )
+    /** 所有方块大图 */
+    val blockBigImageAtlas = Skyline("blocks").apply { blockImageList.getAllImage().forEach { add(it) } }
 
-    /** 不同大小的图集 */
-    val textureSizeMap: Map<Index, Texture> =
-        blockTextureAtlas.atlas.map { it.key to it.value.texture }.toMap()
 
     fun getDefaultImage() = BufferedImage(DEFAULT_MODEL_SIZE, DEFAULT_MODEL_SIZE, BufferedImage.TYPE_INT_ARGB)
     fun defaultImage(imageAction: BufferedImage.() -> Unit): BufferedImage {

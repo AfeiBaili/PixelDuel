@@ -1,16 +1,13 @@
 package cn.afeibaili.jump.desktop.world.model
 
-import cn.afeibaili.gl.exception.ImageException
-import cn.afeibaili.gl.image.Atlas
-import cn.afeibaili.gl.image.Texture
-import cn.afeibaili.gl.util.Index
+import cn.afeibaili.gl.render.WorldRenderer
 import cn.afeibaili.jump.common.block.Blocks
-import cn.afeibaili.jump.common.json.BlockInfo
 import cn.afeibaili.jump.common.world.Chunk
 import cn.afeibaili.jump.desktop.render.texture.TextureManager
 import cn.afeibaili.jump.desktop.world.block.BlockModel
 import cn.afeibaili.jump.desktop.world.block.BlockModelType
 import cn.afeibaili.jump.desktop.world.block.BlockUv
+import org.lwjgl.BufferUtils
 
 
 /**
@@ -20,75 +17,59 @@ import cn.afeibaili.jump.desktop.world.block.BlockUv
  * @version 2026/8/31 13:20
  */
 
-class ChunkModel(val chunk: Chunk, var blockAtlas: MutableList<BlockAtlas>) {
+class ChunkModel(val chunk: Chunk, val blocks: Array<BlockModel>) {
     var changed = true
+    val positionBuffer = BufferUtils.createByteBuffer(WorldRenderer.INSTANCE_SIZE_BYTE.toInt())
+    val uvBuffer = BufferUtils.createByteBuffer(WorldRenderer.UV_SIZE_BYTE.toInt())
+
+    fun updatePositionBuffer() {
+        positionBuffer.clear()
+        blocks.forEach { blockModel ->
+            positionBuffer.putInt(blockModel.x)
+            positionBuffer.putInt(blockModel.y)
+        }
+        positionBuffer.flip()
+    }
 
     fun update() {
         if (chunk.changed || changed) {
-            blockAtlas = buildAtlases(chunk)
-
-            blockAtlas.forEach { blockAtlas ->
-                blockAtlas.updateInstanceBuffer()
-                blockAtlas.updateUvBuffer()
-            }
+            updatePositionBuffer()
             chunk.update()
             changed = false
         }
-        blockAtlas.forEach { blockAtlas -> blockAtlas.update() }
     }
 
     companion object {
-        val blockTextureAtlas get() = TextureManager.blockTextureAtlas
-        val textureSide get() = TextureManager.textureSizeMap
-        val blockInfo get() = TextureManager.blockInfoMap
+        val blockImageList get() = TextureManager.blockImageList
+        val blockBigImageAtlas get() = TextureManager.blockBigImageAtlas
 
         fun of(chunk: Chunk): ChunkModel {
-            return ChunkModel(chunk, buildAtlases(chunk))
+            return ChunkModel(chunk, buildBlockModel(chunk))
         }
 
-        fun buildAtlases(chunk: Chunk): MutableList<BlockAtlas> {
+        fun buildBlockModel(chunk: Chunk): Array<BlockModel> {
             val blockTypeModelMap = mutableMapOf<String, BlockModelType>()
-            val blockModelData = mutableMapOf<Index, BlockTextureModelList>()
+            val blockModelList = mutableListOf<BlockModel>()
 
             chunk.blocks.forEach { block ->
-                var atlas: Atlas? = blockTextureAtlas.getAtlas(block.id)
-                if (atlas == null) {
-                    atlas = blockTextureAtlas.getAtlas(Blocks.ERROR.blockType.id)
-                }
-                atlas ?: throw ImageException("找不到错误纹理，其中纹理缺失: ${block.type.id}")
-
-                val uvs: List<FloatArray> = runCatching {
-                    blockTextureAtlas.getUvs(block.id)
-                }.getOrElse {
-                    runCatching {
-                        blockTextureAtlas.getUvs(Blocks.ERROR.blockType.id)
-                    }.getOrElse { throw ImageException("找不到错误纹理uv") }
-                }
+                val uvMap: Map<String, BlockUv> = blockImageList.toBlockUvMap(blockBigImageAtlas)
+                val blockUv: BlockUv = uvMap[block.id]
+                    ?: uvMap[Blocks.ERROR.blockType.id]
+                    ?: error("找不到错误纹理, 在寻找 ${block.type.identifier} 中")
 
                 var blockModelType: BlockModelType? = blockTypeModelMap[block.id]
                 if (blockModelType == null) {
-                    val info: BlockInfo? = blockInfo[block.id]
-                    val switchIntervalMilli: Int = info?.switchIntervalMillis ?: 500
                     blockTypeModelMap[block.id] = BlockModelType.register(
-                        block.type.identifier, BlockUv(uvs, switchIntervalMilli)
+                        block.type.identifier, blockUv
                     )
                 }
                 blockModelType = blockTypeModelMap[block.id]!!
 
-                val texture: Texture = textureSide[atlas.atlasId]!!
-                val modelArray: BlockTextureModelList? = blockModelData[atlas.atlasId]
                 val model = BlockModel(block.x, block.y, blockModelType)
-                if (modelArray == null) blockModelData[atlas.atlasId] =
-                    BlockTextureModelList(texture, mutableListOf(model))
-                else modelArray.blocks.add(model)
+                blockModelList.add(model)
             }
 
-            val atlases: List<BlockAtlas> =
-                blockModelData.map { (_, bl) -> BlockAtlas(bl.texture, bl.blocks, bl.blocks.size) }
-
-            return atlases as MutableList<BlockAtlas>
+            return blockModelList.toTypedArray()
         }
     }
-
-    class BlockTextureModelList(val texture: Texture, val blocks: MutableList<BlockModel>)
 }
