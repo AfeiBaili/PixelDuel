@@ -70,7 +70,7 @@ class WorldRenderer {
                     layer.chunks.forEach { chunkModel ->
                         chunkModel.update()
                         uploadInstanceBuffer(chunkModel.positionBuffer)
-                        uploadUvBuffer(atlas.uvBuffer)
+                        uploadUvBuffer(chunkModel.uvBuffer)
                         program.setUniform("light", f1 = computeLayerLight(index, layerSize))
                         renderInstance(chunkModel.blocks.size)
                     }

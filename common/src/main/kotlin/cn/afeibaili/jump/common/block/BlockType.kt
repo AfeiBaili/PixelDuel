@@ -14,6 +14,11 @@ import cn.afeibaili.jump.common.util.logger
 data class BlockType(val identifier: Identifier) {
     val id get() = identifier.id
 
+
+    override fun toString(): String {
+        return "BlockType(type=${identifier.type}, id=$id)"
+    }
+
     /**
      * # 方块类型实例
      *
@@ -22,6 +27,7 @@ data class BlockType(val identifier: Identifier) {
      */
     companion object {
         val all = HashMap<Identifier, BlockType>()
+
         private val logger = logger { "Blocks" }
 
         fun register(id: String): BlockType {

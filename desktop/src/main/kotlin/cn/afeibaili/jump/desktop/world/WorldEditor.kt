@@ -144,10 +144,10 @@ class WorldEditor(val world: World) : TickHandler {
         itemBarKeySet.bind(Key("item.bar.10", GLFW.GLFW_KEY_0)) {
             pressed { itemBar.switchGird(9) }
         }
-        scrollSet.bind(Scroll("next.layer", 2.0, shift = true)) {
+        scrollSet.bind(Scroll("next.layer", 1.0, shift = true)) {
             down { switchNextLayer() }
         }
-        scrollSet.bind(Scroll("previous.layer", 2.0, shift = true)) {
+        scrollSet.bind(Scroll("previous.layer", 1.0, shift = true)) {
             up { switchPreviousLayer() }
         }
     }

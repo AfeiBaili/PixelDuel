@@ -71,7 +71,14 @@ object TextureManager {
     val blockBigImageAtlas = Skyline("blocks").apply { blockImageList.getAllImage().forEach { add(it) } }
 
 
+    /**
+     * ## 获取默认图片
+     */
     fun getDefaultImage() = BufferedImage(DEFAULT_MODEL_SIZE, DEFAULT_MODEL_SIZE, BufferedImage.TYPE_INT_ARGB)
+
+    /**
+     * ## 操作默认图片
+     */
     fun defaultImage(imageAction: BufferedImage.() -> Unit): BufferedImage {
         val image: BufferedImage = getDefaultImage()
         imageAction(image)
