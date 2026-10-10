@@ -73,6 +73,6 @@ class Chunk(
             return chunk
         }
 
-        const val CHUNK_SIDE = 32
+        const val CHUNK_SIDE = 16
     }
 }
