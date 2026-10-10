@@ -31,6 +31,18 @@ class ChunkModel(val chunk: Chunk, val blocks: Array<BlockModel>) {
         positionBuffer.flip()
     }
 
+    fun updateUvBuffer() {
+        uvBuffer.clear()
+        blocks.forEach { blockModel ->
+            val uvs: FloatArray = blockModel.type.uv.get()
+            uvBuffer.putFloat(uvs[0])
+            uvBuffer.putFloat(uvs[1])
+            uvBuffer.putFloat(uvs[2])
+            uvBuffer.putFloat(uvs[3])
+        }
+        uvBuffer.flip()
+    }
+
     fun update() {
         if (chunk.changed || changed) {
             updatePositionBuffer()
