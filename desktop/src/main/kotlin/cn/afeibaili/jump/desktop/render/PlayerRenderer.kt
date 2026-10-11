@@ -16,12 +16,13 @@ class PlayerRenderer {
     val player get() = Player.self
     val logic get() = LogicThread.self
     val camera get() = Application.camera
+    val scale get() = Application.camera.scale
 
     fun render() {
         // 插值渲染
         val alpha = logic.accumulationSecondes / logic.step // 当前进度
         val renderX = player.pvx + (player.x - player.pvx) * alpha
         val renderY = player.pvy + (player.y - player.pvy) * alpha
-        camera.translation(-renderX, -renderY)
+        camera.translation(-renderX * scale, -renderY * scale)
     }
 }

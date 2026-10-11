@@ -82,6 +82,10 @@ class F3Layout {
                     "f3.current.layer", "init current layer index", font, updater = textUpdater, scale = scale,
                     backgroundColor = textBackgroundColor,
                 )
+                text(
+                    "f3.current.world.scale", "init world scale", font, updater = textUpdater, scale = scale,
+                    backgroundColor = textBackgroundColor,
+                )
             }
         }
     }
@@ -96,5 +100,6 @@ class F3Layout {
         textUpdater.update("f3.cursor.block", "block: ${worldEditor.currentCursorBlock}")
         textUpdater.update("f3.player.position", "player: [x:${Player.self.x}, y:${Player.self.y}]")
         textUpdater.update("f3.current.layer", "layer index: ${worldEditor.currentLayerIndex}")
+        textUpdater.update("f3.current.world.scale", "world scale: ${Application.rendererSystem.worldRenderer.scale}")
     }
 }

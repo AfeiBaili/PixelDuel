@@ -46,6 +46,7 @@ class WorldEditor(val world: World) : TickHandler {
     var placeInterval = 50
     var accumulator = 0L
     var lastPlaceMillis = Time.millis()
+    val scale get() = Application.camera.scale
 
     // input /////
     val mouseButtonSet = MouseButtonSet("mouse" identifier "world.editor")
@@ -89,8 +90,19 @@ class WorldEditor(val world: World) : TickHandler {
         world.setBlockAt(currentLayerIndex, getCurrentBlockX(), getCurrentBlockY(), Blocks.AIR.blockType)
     }
 
-    fun getCurrentBlockX() = floor(currentPlayerX + (currentCursorX.toFloat() / width) * zoom * aspect).toInt()
-    fun getCurrentBlockY() = floor(currentPlayerY + ((height - currentCursorY.toFloat()) / height) * zoom).toInt()
+    fun getCurrentBlockX(): Int {
+        val centerX = zoom * aspect / 2
+        val screenX = currentCursorX.toFloat() / width * zoom * aspect
+
+        return floor(centerX + (screenX - centerX) / scale + currentPlayerX).toInt()
+    }
+
+    fun getCurrentBlockY(): Int {
+        val centerY = zoom / 2
+        val screenY = (height - currentCursorY.toFloat()) / height * zoom
+
+        return floor(centerY + (screenY - centerY) / scale + currentPlayerY).toInt()
+    }
 
     fun loadInput() {
         mouseButtonSet.bind(MouseButton("place.block", GLFW.GLFW_MOUSE_BUTTON_2)) {

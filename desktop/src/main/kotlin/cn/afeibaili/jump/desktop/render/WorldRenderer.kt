@@ -1,13 +1,16 @@
 package cn.afeibaili.jump.desktop.render
 
 import cn.afeibaili.gl.image.atlas.BigImageAtlas
+import cn.afeibaili.gl.input.Scroll
 import cn.afeibaili.gl.render.WorldRenderer
 import cn.afeibaili.gl.render.camera.Camera
 import cn.afeibaili.gl.render.shader.Program
 import cn.afeibaili.gl.render.shader.Shader
+import cn.afeibaili.gl.util.Time
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
+import cn.afeibaili.jump.desktop.input.ScrollSet
 import cn.afeibaili.jump.desktop.render.texture.TextureManager
 import cn.afeibaili.jump.desktop.world.model.LayerModel
 import cn.afeibaili.jump.desktop.world.model.WorldModel
@@ -29,9 +32,15 @@ class WorldRenderer {
     private lateinit var _camera: Camera
     private lateinit var _program: Program
     private lateinit var renderer: WorldRender
+    val scrollSet = ScrollSet("world.scale")
+
+    var scale = 1f
+    var accumulator = 1f
+    var damping = 6f
+    var lastMillis = Time.millis()
 
     fun init() {
-        logger.info("transform to world model")
+        loadInput()
         logger.info("create program")
         _program = Program.create(
             Shader.create(
@@ -49,7 +58,29 @@ class WorldRenderer {
     }
 
     fun render() {
+        computeScale()
         renderer.render()
+    }
+
+    fun computeScale() {
+        val now = Time.millis()
+        val dt = (now - lastMillis) / 1000f
+        lastMillis = now
+        scale += (accumulator - scale) * (damping * dt / (1f - damping * dt))
+        camera.scale(scale)
+    }
+
+    fun loadInput() {
+        val scaleValue = 0.05f
+
+        scrollSet.bind(Scroll("augment.scale", 1.0, alt = true)) {
+            up { if (accumulator + scaleValue < 5) accumulator += scaleValue }
+        }
+        scrollSet.bind(Scroll("reduce.scale", 1.0, alt = true)) {
+            down { if (accumulator - scaleValue > 0.1) accumulator -= scaleValue }
+        }
+
+        scrollSet.on()
     }
 
     companion object {
