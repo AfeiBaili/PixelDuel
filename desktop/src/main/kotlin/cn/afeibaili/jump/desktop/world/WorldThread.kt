@@ -1,7 +1,6 @@
 package cn.afeibaili.jump.desktop.world
 
 import cn.afeibaili.gl.util.Time
-import cn.afeibaili.jump.desktop.Application
 
 
 /**
@@ -46,6 +45,6 @@ class WorldThread {
     }
 
     companion object {
-        val self get() = WorldThread()
+        val self = WorldThread()
     }
 }

@@ -28,6 +28,6 @@ class Layer(val name: String) {
     }
 
     companion object {
-        var LAYER_SIDE = 2
+        var LAYER_SIDE = 4
     }
 }

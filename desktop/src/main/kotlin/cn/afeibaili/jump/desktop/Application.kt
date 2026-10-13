@@ -62,7 +62,7 @@ class Application {
                     rendererSystem.frame()
                 }
                 logicThread.thread.join()
-                logicThread.thread.join()
+                worldThread.thread.join()
             }.onFailure {
                 logger.error("渲染线程出错, 退出程序: ${it.stackTraceToString()}")
                 stop()

@@ -1,7 +1,6 @@
 package cn.afeibaili.jump.desktop.logic
 
 import cn.afeibaili.gl.util.Time
-import cn.afeibaili.jump.desktop.Application
 
 
 /**
@@ -12,17 +11,13 @@ import cn.afeibaili.jump.desktop.Application
  */
 
 class LogicThread {
-    companion object {
-        val self get() = LogicThread()
-    }
-
     var isActive: Boolean = true
 
     val tick = 60f
+
     val step = 1f / tick
     var accumulationSecondes = 0f
     var lastTime = Time.nano()
-
     val thread = Thread({
         while (isActive) {
             val currentNano: Long = Time.nano()
@@ -54,5 +49,9 @@ class LogicThread {
 
     fun stop() {
         isActive = false
+    }
+
+    companion object {
+        val self = LogicThread()
     }
 }

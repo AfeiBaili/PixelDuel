@@ -1,6 +1,8 @@
 package cn.afeibaili.jump.desktop.world
 
+import cn.afeibaili.jump.common.world.Chunk
 import cn.afeibaili.jump.common.world.World
+import cn.afeibaili.jump.desktop.entity.Player
 
 
 /**
@@ -11,10 +13,14 @@ import cn.afeibaili.jump.common.world.World
  */
 
 class WorldHandler(val world: World) : WorldTickHandler {
+    val player = Player.self
+    val loadedChunk = mutableMapOf<String, Chunk>()
+
     init {
         WorldTickHandler.addHandler(this)
     }
 
     override fun tick() {
+
     }
 }
