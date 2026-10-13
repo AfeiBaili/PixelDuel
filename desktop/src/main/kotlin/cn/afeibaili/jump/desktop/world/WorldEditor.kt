@@ -161,6 +161,9 @@ class WorldEditor(val world: World) : TickHandler {
                 }
             }
         }
+        layerKeySet.bind(Key("break.layer.index.mode", GLFW.GLFW_KEY_LEFT_CONTROL)) {
+            layerIndexMode = getIsPressCtrl()
+        }
         layerKeySet.bind(Key("switch.last.layer", GLFW.GLFW_KEY_MINUS)) {
             released { switchPreviousLayer() }
         }
