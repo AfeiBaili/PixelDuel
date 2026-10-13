@@ -18,7 +18,7 @@ class Layer(val name: String) {
     val chunks: Array<Chunk> = Array(LAYER_SIDE * LAYER_SIDE) { index ->
         val x: Int = index % LAYER_SIDE
         val y: Int = index / LAYER_SIDE
-        logger.info("create $name layer chunk: [x:${x}, y:${y}]")
+        logger.debug("create $name layer chunk: [x:${x}, y:${y}]")
         Chunk.createEmpty(x, y)
     }
 

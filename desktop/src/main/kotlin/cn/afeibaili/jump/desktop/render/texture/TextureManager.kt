@@ -3,7 +3,7 @@ package cn.afeibaili.jump.desktop.render.texture
 import cn.afeibaili.gl.image.TextureModel
 import cn.afeibaili.gl.image.atlas.Skyline
 import cn.afeibaili.jump.common.block.Blocks
-import cn.afeibaili.jump.common.resource.BlockInfoLoader
+import cn.afeibaili.jump.desktop.world.block.BlockInfoLoader
 import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import cn.afeibaili.jump.common.util.logger
 import java.awt.image.BufferedImage

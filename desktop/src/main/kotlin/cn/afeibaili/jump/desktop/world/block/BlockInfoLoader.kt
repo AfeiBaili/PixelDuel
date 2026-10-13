@@ -1,10 +1,11 @@
-package cn.afeibaili.jump.common.resource
+package cn.afeibaili.jump.desktop.world.block
 
 import cn.afeibaili.jump.common.exception.WorldException
 import cn.afeibaili.jump.common.json.BlockInfo
 import cn.afeibaili.jump.common.json.JSON_MAPPER
+import cn.afeibaili.jump.common.resource.Loader
+import cn.afeibaili.jump.common.resource.ResourceFileGetter
 import java.io.File
-
 
 /**
  * # 方块信息加载器
