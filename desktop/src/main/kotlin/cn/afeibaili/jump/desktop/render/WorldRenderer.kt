@@ -108,6 +108,14 @@ class WorldRenderer {
                 }
             }
 
+            /**
+             * ## 层级光照更新方法
+             *
+             * @param layerIndex 层级索引
+             * @param size 所有层级的数量
+             *
+             * @return 光照值
+             */
             fun computeLayerLight(layerIndex: Int, size: Int): Float {
                 return 1f - layerIndex / size.toFloat() / 1.55f
             }
