@@ -5,7 +5,7 @@ import cn.afeibaili.gl.input.MouseButtonBind
 import cn.afeibaili.jump.common.Identifier
 import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
-import cn.afeibaili.jump.desktop.logic.TickHandler
+import cn.afeibaili.jump.desktop.logic.LogicTickHandler
 
 
 /**
@@ -15,7 +15,7 @@ import cn.afeibaili.jump.desktop.logic.TickHandler
  * @version 2026/9/2 12:13
  */
 
-data class MouseButtonSet(val identifier: Identifier) : TickHandler {
+data class MouseButtonSet(val identifier: Identifier) : LogicTickHandler {
     companion object {
         private val logger = logger { "MouseButtonSet" }
         val all = HashSet<MouseButtonSet>()
@@ -25,7 +25,7 @@ data class MouseButtonSet(val identifier: Identifier) : TickHandler {
     }
 
     init {
-        TickHandler.addHandler(this)
+        LogicTickHandler.addHandler(this)
         addSet(this)
     }
 

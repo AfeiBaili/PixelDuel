@@ -3,7 +3,7 @@ package cn.afeibaili.jump.desktop.entity
 import cn.afeibaili.gl.input.Key
 import cn.afeibaili.jump.desktop.input.KeySet
 import cn.afeibaili.jump.desktop.logic.LogicThread
-import cn.afeibaili.jump.desktop.logic.TickHandler
+import cn.afeibaili.jump.desktop.logic.LogicTickHandler
 import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
 
@@ -18,7 +18,7 @@ import kotlin.math.abs
 class Player(
     override var x: Float,
     override var y: Float,
-) : Entity, TickHandler {
+) : Entity, LogicTickHandler {
     companion object {
         val self = Player(0f, 0f)
     }
@@ -33,7 +33,7 @@ class Player(
     val keySet = KeySet("player")
 
     init {
-        TickHandler.addHandler(this)
+        LogicTickHandler.addHandler(this)
     }
 
     override fun tick() {

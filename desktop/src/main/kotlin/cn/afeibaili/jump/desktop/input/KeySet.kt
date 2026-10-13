@@ -5,7 +5,7 @@ import cn.afeibaili.gl.input.KeyBind
 import cn.afeibaili.jump.common.identifier
 import cn.afeibaili.jump.common.util.logger
 import cn.afeibaili.jump.desktop.Application
-import cn.afeibaili.jump.desktop.logic.TickHandler
+import cn.afeibaili.jump.desktop.logic.LogicTickHandler
 
 /**
  * # 一个按键集合，统一进行开关管理
@@ -41,7 +41,7 @@ import cn.afeibaili.jump.desktop.logic.TickHandler
  * @version 2026/6/27 19:53
  */
 
-data class KeySet(val id: String) : TickHandler {
+data class KeySet(val id: String) : LogicTickHandler {
     val identifier = "key" identifier id
 
     companion object {
@@ -54,7 +54,7 @@ data class KeySet(val id: String) : TickHandler {
     }
 
     init {
-        TickHandler.addHandler(this)
+        LogicTickHandler.addHandler(this)
         addSet(this)
     }
 

@@ -42,10 +42,10 @@ class LogicThread {
      *
      * 每秒60次
      *
-     * @see TickHandler
+     * @see LogicTickHandler
      */
     fun update() {
-        TickHandler.all.forEach { it.tick() }
+        LogicTickHandler.all.forEach { it.tick() }
     }
 
     fun start() {

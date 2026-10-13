@@ -17,11 +17,11 @@ package cn.afeibaili.jump.desktop.logic
  * @version 2026/6/28 00:30
  */
 
-interface TickHandler {
+interface LogicTickHandler {
     companion object {
-        val all = mutableListOf<TickHandler>()
+        val all = mutableListOf<LogicTickHandler>()
 
-        fun addHandler(handler: TickHandler) {
+        fun addHandler(handler: LogicTickHandler) {
             all.add(handler)
         }
     }

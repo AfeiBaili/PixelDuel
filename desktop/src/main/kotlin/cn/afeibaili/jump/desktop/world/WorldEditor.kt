@@ -16,7 +16,7 @@ import cn.afeibaili.jump.desktop.input.MouseButtonSet
 import cn.afeibaili.jump.desktop.input.ScrollSet
 import cn.afeibaili.jump.desktop.item.ItemBar
 import cn.afeibaili.jump.desktop.item.ItemGrid
-import cn.afeibaili.jump.desktop.logic.TickHandler
+import cn.afeibaili.jump.desktop.logic.LogicTickHandler
 import org.lwjgl.glfw.GLFW
 import kotlin.math.floor
 
@@ -28,7 +28,7 @@ import kotlin.math.floor
  * @version 2026/8/27 20:23
  */
 
-class WorldEditor(val world: World) : TickHandler {
+class WorldEditor(val world: World) : LogicTickHandler {
     var currentCursorBlock: Block? = null
     val currentPlayerX get() = Player.self.x
     val currentPlayerY get() = Player.self.y
@@ -62,7 +62,7 @@ class WorldEditor(val world: World) : TickHandler {
     val scrollSet = ScrollSet("world.editor.switch.layer")
 
     init {
-        TickHandler.addHandler(this)
+        LogicTickHandler.addHandler(this)
         loadInput()
         mouseButtonSet.on()
         layerKeySet.on()
