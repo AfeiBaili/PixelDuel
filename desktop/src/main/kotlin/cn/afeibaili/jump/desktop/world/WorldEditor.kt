@@ -43,8 +43,7 @@ class WorldEditor(val world: World) : LogicTickHandler {
     var maxLayerIndex = world.layers.size
     var currentLayerIndex = 0
     var itemBar: ItemBar = ItemBar()
-    var layerIndexMode = false //todo
-
+    var layerIndexMode = false
     var placeInterval = 50
     var placeAccumulator = 0L
     var lastPlaceMillis = Time.millis()

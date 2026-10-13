@@ -10,6 +10,8 @@ import cn.afeibaili.jump.desktop.logic.LogicThread
 import cn.afeibaili.jump.desktop.render.RendererSystem
 import cn.afeibaili.jump.desktop.window.WindowSystem
 import cn.afeibaili.jump.desktop.world.WorldEditor
+import cn.afeibaili.jump.desktop.world.WorldHandler
+import cn.afeibaili.jump.desktop.world.WorldThread
 import cn.afeibaili.jump.desktop.world.model.WorldModel
 
 
@@ -42,10 +44,30 @@ class Application {
         val screen = RootLayout(screenWidth.toFloat(), screenHeight.toFloat())
         val rendererSystem = RendererSystem() //渲染系统
         val logicThread = LogicThread()
+        val worldThread = WorldThread()
         val camera get() = rendererSystem.worldRenderer.camera
         val player get() = Player.self
         lateinit var worldEditor: WorldEditor
         lateinit var world: WorldModel
+        lateinit var worldHandler: WorldHandler
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            runCatching {
+                world = loadWorld()
+                setup()
+                logicThread.start()
+                worldThread.start()
+                window.loopFrame({ running }) {
+                    rendererSystem.frame()
+                }
+                logicThread.thread.join()
+                logicThread.thread.join()
+            }.onFailure {
+                logger.error("渲染线程出错, 退出程序: ${it.stackTraceToString()}")
+                stop()
+            }
+        }
 
         fun setup() {
             logger.info("initialize world editor")
@@ -59,31 +81,18 @@ class Application {
             logger.info("application is initialized")
         }
 
-        fun loadWorld(): WorldModel {
-            return WorldModel.of(World("void"))
-        }
-
-        @JvmStatic
-        fun main(args: Array<String>) {
-            runCatching {
-                world = loadWorld()
-                setup()
-                logicThread.start()
-                window.loopFrame({ running }) {
-                    rendererSystem.frame()
-                }
-                logicThread.thread.join()
-            }.onFailure {
-                logger.error("渲染线程出错, 退出程序: ${it.stackTraceToString()}")
-                stop()
-            }
-        }
-
         fun stop() {
             running = false
             logicThread.stop()
+            worldThread.stop()
             window.close()
             logger.info("windows is destroy")
+        }
+
+        fun loadWorld(): WorldModel {
+            val default = World("default")
+            worldHandler = WorldHandler(default)
+            return WorldModel.of(default)
         }
     }
 }
