@@ -20,4 +20,8 @@ class BlockModelUpdater {
     fun update() {
         blockType.forEach { it.uv.update() }
     }
+
+    fun changed() {
+        blockType.forEach { it.uv.changed() }
+    }
 }

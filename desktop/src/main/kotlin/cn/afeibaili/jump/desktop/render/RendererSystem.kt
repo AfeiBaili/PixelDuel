@@ -18,6 +18,7 @@ class RendererSystem {
     val playerRenderer = PlayerRenderer()
     val blockModelUpdater = BlockModelUpdater()
     val uiRenderer = UIRenderer()
+
     // val debugRenderer = DebugRenderer()
     val fps = FpsTimer()
 
@@ -32,9 +33,10 @@ class RendererSystem {
 
     fun frame() {
         fps.update()
-        blockModelUpdater.update()
         TextureManager.blockImageList.updateDynamicImage()
+        blockModelUpdater.update()
         worldRenderer.render()
+        blockModelUpdater.changed()
         playerRenderer.render()
         uiRenderer.render()
     }

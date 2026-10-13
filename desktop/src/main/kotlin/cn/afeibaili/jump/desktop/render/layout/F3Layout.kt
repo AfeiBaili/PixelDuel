@@ -82,7 +82,10 @@ class F3Layout {
         textUpdater.update("f3.cursor.block", "block: ${worldEditor.currentCursorBlock}")
         textUpdater.update("f3.player.position", "player: [x:${Player.self.x}, y:${Player.self.y}]")
         textUpdater.update("f3.current.layer", "layer index: ${worldEditor.currentLayerIndex}")
-        textUpdater.update("f3.world.layer.index.mode", "layer index mode: ${worldEditor.layerIndexMode}")
+        textUpdater.update(
+            "f3.world.layer.index.mode",
+            "break layer mode: ${if (worldEditor.layerIndexMode) "index" else "asc"}"
+        )
         textUpdater.update("f3.current.world.scale", "world scale: ${Application.rendererSystem.worldRenderer.scale}")
     }
 }

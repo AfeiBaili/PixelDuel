@@ -24,8 +24,11 @@ class BlockUv(val uv: List<FloatArray>, var switchIntervalMilli: Int = 500) {
     }
 
     fun get(): FloatArray {
-        changed = false
         return uv[indexUv]
+    }
+
+    fun changed() {
+        changed = false
     }
 
     fun update() {

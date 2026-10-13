@@ -43,7 +43,7 @@ class WorldEditor(val world: World) : TickHandler {
     var maxLayerIndex = world.layers.size
     var currentLayerIndex = 0
     var itemBar: ItemBar = ItemBar()
-    var layerIndexMode = false
+    var layerIndexMode = false //todo
 
     var placeInterval = 50
     var placeAccumulator = 0L
