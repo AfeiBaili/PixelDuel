@@ -43,9 +43,16 @@ class WorldEditor(val world: World) : TickHandler {
     var maxLayerIndex = world.layers.size
     var currentLayerIndex = 0
     var itemBar: ItemBar = ItemBar()
+    var layerIndexMode = false
+
     var placeInterval = 50
-    var accumulator = 0L
+    var placeAccumulator = 0L
     var lastPlaceMillis = Time.millis()
+
+    var breakInterval = 50
+    var breakAccumulator = 0L
+    var lastBreakMillis = Time.millis()
+
     val scale get() = Application.camera.scale
 
     // input /////
@@ -66,7 +73,16 @@ class WorldEditor(val world: World) : TickHandler {
     override fun tick() {
         blockPositionX = getCurrentBlockX()
         blockPositionY = getCurrentBlockY()
-        currentCursorBlock = world.getBlockAt(0, blockPositionX, blockPositionY)
+        for (i in 0 until world.layers.size) {
+            val blockAt: Block? = world.getBlockAt(i, blockPositionX, blockPositionY)
+            if (blockAt == null || blockAt.type == Blocks.AIR.blockType)
+                continue
+            else {
+                currentCursorBlock = world.getBlockAt(i, blockPositionX, blockPositionY)
+                return
+            }
+        }
+        currentCursorBlock = null
     }
 
     fun switchNextLayer() {
@@ -83,11 +99,27 @@ class WorldEditor(val world: World) : TickHandler {
         val grid: ItemGrid = itemBar.getGrid()
         if (grid.item !is BlockItem && grid.item == null) return
         val blockItem: BlockItem = grid.item as BlockItem
+        if (blockItem.blockItemType == Blocks.AIR) return
         world.setBlockAt(currentLayerIndex, getCurrentBlockX(), getCurrentBlockY(), blockItem.blockItemType.blockType)
     }
 
     fun breakBlockByButton() {
-        world.setBlockAt(currentLayerIndex, getCurrentBlockX(), getCurrentBlockY(), Blocks.AIR.blockType)
+        val currentBlockX: Int = getCurrentBlockX()
+        val currentBlockY: Int = getCurrentBlockY()
+
+        if (layerIndexMode) {
+            world.setBlockAt(currentLayerIndex, currentBlockX, currentBlockY, Blocks.AIR.blockType)
+        } else {
+            for (i in 0 until world.layers.size) {
+                val blockAt: Block? = world.getBlockAt(i, currentBlockX, currentBlockY)
+                if (blockAt == null || blockAt.type == Blocks.AIR.blockType) {
+                    continue
+                } else {
+                    world.setBlockAt(i, currentBlockX, currentBlockY, Blocks.AIR.blockType)
+                    return
+                }
+            }
+        }
     }
 
     fun getCurrentBlockX(): Int {
@@ -110,15 +142,24 @@ class WorldEditor(val world: World) : TickHandler {
                 val currentMillis = Time.millis()
                 val delta = currentMillis - lastPlaceMillis
                 lastPlaceMillis = currentMillis
-                accumulator += delta
-                while (accumulator > placeInterval) {
-                    accumulator -= placeInterval
+                placeAccumulator += delta
+                while (placeAccumulator > placeInterval) {
+                    placeAccumulator -= placeInterval
                     placeBlockByButton()
                 }
             }
         }
         mouseButtonSet.bind(MouseButton("break.block", GLFW.GLFW_MOUSE_BUTTON_1)) {
-            if (buttonPressed()) breakBlockByButton()
+            if (buttonPressed()) {
+                val currentMillis = Time.millis()
+                val delta = currentMillis - lastBreakMillis
+                lastBreakMillis = currentMillis
+                breakAccumulator += delta
+                while (breakAccumulator > breakInterval) {
+                    breakAccumulator -= breakInterval
+                    breakBlockByButton()
+                }
+            }
         }
         layerKeySet.bind(Key("switch.last.layer", GLFW.GLFW_KEY_MINUS)) {
             released { switchPreviousLayer() }

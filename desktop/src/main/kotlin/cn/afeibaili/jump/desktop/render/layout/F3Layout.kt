@@ -43,7 +43,12 @@ class F3Layout {
                 window.vsync = !window.vsync
             }
         }
-        keySet.bind(Key("open_f3", GLFW.GLFW_KEY_F3)) {
+        keySet.bind(Key("index.layer.mode", GLFW.GLFW_KEY_F2)) {
+            released {
+                worldEditor.layerIndexMode = !worldEditor.layerIndexMode
+            }
+        }
+        keySet.bind(Key("open.f3", GLFW.GLFW_KEY_F3)) {
             released {
                 f3.showable = !f3.showable
                 Application.rendererSystem.uiRenderer.update()
@@ -54,38 +59,15 @@ class F3Layout {
     private fun layout() = Application.screen.layout {
         f3 = block(setting = { it.maxSize() }) {
             rowAdapt(setting = { it: AlignmentSetting -> it.align(AlignmentType.LEFT_TOP).offsetX(10f).offsetY(10f) }) {
-                text(
-                    "f3.greet", "press f3 open debug", font, updater = textUpdater, scale = scale,
-                    backgroundColor = textBackgroundColor
-                )
-                text(
-                    "f3.fps", "init fps", font, updater = textUpdater, scale = scale,
-                    backgroundColor = textBackgroundColor,
-                )
-                text(
-                    "f3.v-sync", "init v-sync", font, updater = textUpdater, scale = scale,
-                    backgroundColor = textBackgroundColor,
-                )
-                text(
-                    "f3.cursor.position", "init cursor", font, updater = textUpdater, scale = scale,
-                    backgroundColor = textBackgroundColor,
-                )
-                text(
-                    "f3.cursor.block", "init cursor block", font, updater = textUpdater, scale = scale,
-                    backgroundColor = textBackgroundColor,
-                )
-                text(
-                    "f3.player.position", "init player position", font, updater = textUpdater, scale = scale,
-                    backgroundColor = textBackgroundColor,
-                )
-                text(
-                    "f3.current.layer", "init current layer index", font, updater = textUpdater, scale = scale,
-                    backgroundColor = textBackgroundColor,
-                )
-                text(
-                    "f3.current.world.scale", "init world scale", font, updater = textUpdater, scale = scale,
-                    backgroundColor = textBackgroundColor,
-                )
+                text("f3.greet", "press f3 open debug", font, scale, textUpdater, textBackgroundColor)
+                text("f3.fps", "init", font, scale, textUpdater, textBackgroundColor)
+                text("f3.v-sync", "init", font, scale, textUpdater, textBackgroundColor)
+                text("f3.cursor.position", "init", font, scale, textUpdater, textBackgroundColor)
+                text("f3.cursor.block", "init", font, scale, textUpdater, textBackgroundColor)
+                text("f3.player.position", "init", font, scale, textUpdater, textBackgroundColor)
+                text("f3.current.layer", "init", font, scale, textUpdater, textBackgroundColor)
+                text("f3.world.layer.index.mode", "init", font, scale, textUpdater, textBackgroundColor)
+                text("f3.current.world.scale", "init", font, scale, textUpdater, textBackgroundColor)
             }
         }
     }
@@ -100,6 +82,7 @@ class F3Layout {
         textUpdater.update("f3.cursor.block", "block: ${worldEditor.currentCursorBlock}")
         textUpdater.update("f3.player.position", "player: [x:${Player.self.x}, y:${Player.self.y}]")
         textUpdater.update("f3.current.layer", "layer index: ${worldEditor.currentLayerIndex}")
+        textUpdater.update("f3.world.layer.index.mode", "layer index mode: ${worldEditor.layerIndexMode}")
         textUpdater.update("f3.current.world.scale", "world scale: ${Application.rendererSystem.worldRenderer.scale}")
     }
 }
