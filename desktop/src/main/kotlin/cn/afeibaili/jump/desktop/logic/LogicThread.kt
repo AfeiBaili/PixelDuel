@@ -13,7 +13,7 @@ import cn.afeibaili.jump.desktop.Application
 
 class LogicThread {
     companion object {
-        val self get() = Application.logicThread
+        val self get() = LogicThread()
     }
 
     var isActive: Boolean = true

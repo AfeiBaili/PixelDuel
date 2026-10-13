@@ -46,6 +46,6 @@ class WorldThread {
     }
 
     companion object {
-        val self get() = Application.worldThread
+        val self get() = WorldThread()
     }
 }

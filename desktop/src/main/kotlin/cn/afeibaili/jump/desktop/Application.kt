@@ -43,8 +43,8 @@ class Application {
         val windowSystem = WindowSystem(window) //窗口管理器
         val screen = RootLayout(screenWidth.toFloat(), screenHeight.toFloat())
         val rendererSystem = RendererSystem() //渲染系统
-        val logicThread = LogicThread()
-        val worldThread = WorldThread()
+        val logicThread get() = LogicThread.self
+        val worldThread get() = WorldThread.self
         val camera get() = rendererSystem.worldRenderer.camera
         val player get() = Player.self
         lateinit var worldEditor: WorldEditor
